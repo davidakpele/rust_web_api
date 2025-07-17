@@ -31,6 +31,21 @@ This project implements a secure and scalable escrow wallet and transaction syst
 > Rust Edition: **2021**
 
 ---
+## 🔐 Auth & Role-Based Middleware for Axum
+- ➡️ Reference the full implementation: “Axum Auth Middleware” text doc.
+- ✅ How It Works
+1. Jwt-based Auth Extraction
+- The FromRequestParts impl for AuthUser:
+  - Validates 'Bearer <token>' header
+  - Uses jsonwebtoken::decode with HS256 and your JWT_SECRET_KEY
+  - Inserts AuthUser { id, roles } into Request extensions
+  - Returns a 401 Unauthorized JSON error for missing or invalid tokens
+
+2. Role Enforcement
+- The require_roles handler function:
+  - Accepts a State<HashSet<String>> of required roles
+  - Checks if AuthUser.roles intersects
+  - Responds with 200 and forwards to handler if OK; otherwise 401 error JSON
 
 ## 🛠️ Database Schema
 
